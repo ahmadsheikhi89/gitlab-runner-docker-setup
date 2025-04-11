@@ -1,0 +1,30 @@
+# Ignore Docker-related volumes and GitLab data
+logs/
+data/
+config/
+*.pid
+*.sock
+
+# Ignore GitLab Runner config
+/gitlab-runner/config/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore backup files
+*.bak
+*.tmp
+
+# Ignore IDE-specific files
+.idea/
+.vscode/
+*.code-workspace
+
+# Ignore CI/CD artifacts
+/builds/
+/artifacts/
+
+# Node (if you add frontend or script tooling)
+node_modules/
+
