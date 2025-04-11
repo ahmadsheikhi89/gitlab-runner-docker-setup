@@ -1,5 +1,8 @@
 ![Banner](https://raw.githubusercontent.com/ahmadsheikhi89/gitlab-runner-docker-setup/main/banner.png)
 
+[![GitHub license](https://img.shields.io/github/license/ahmadsheikhi89/gitlab-runner-docker-setup?style=flat-square)](https://github.com/ahmadsheikhi89/gitlab-runner-docker-setup/blob/main/LICENSE)
+[![Stars](https://img.shields.io/github/stars/ahmadsheikhi89/gitlab-runner-docker-setup?style=flat-square)](https://github.com/ahmadsheikhi89/gitlab-runner-docker-setup/stargazers)
+
 ## 🚀 GitLab & GitLab Runner Setup with Docker Compose | Complete Local GitLab CI/CD
 
 This guide explains how to set up a self-hosted GitLab instance and GitLab Runner using Docker, and configure a working CI/CD pipeline — just like the one we used to test Docker execution.
