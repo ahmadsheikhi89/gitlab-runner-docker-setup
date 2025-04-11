@@ -1,4 +1,4 @@
-![Banner](https://raw.githubusercontent.com/ahmadsheikhi89/gitlab-runner-docker-setup/main/assets/banner.png)
+![Banner](https://raw.githubusercontent.com/ahmadsheikhi89/gitlab-runner-docker-setup/main/assets/gitlab-runner-banner.png)
 
 ## 🚀 GitLab & GitLab Runner Setup with Docker Compose | Complete Local GitLab CI/CD
 
@@ -24,8 +24,8 @@ project-root/
 ├── docker-compose.yml            # GitLab main instance
 ├── gitlab-runner/
 │   ├── docker-compose.yml       # Runner service
-│   └── config/config.toml       # Runner config
-│   └── .gitlab-ci.yml           # Zabbix deployment pipeline
+│   └── config/config.toml       # Runner config (contains settings like executor, Docker image, volume mounts, and token)
+
 └── .gitlab-ci.yml               # Main pipeline config
 ```
 
@@ -162,16 +162,7 @@ test-runner:
 
 ---
 
-### 🔧 Troubleshooting CI/CD Failures
-
-#### ⏱️ Timeout or Stuck Job
-If you see an error like:
-> `There has been a timeout failure or the job got stuck.`
-
-Try the following:
-
-- ✅ Add a job timeout explicitly:
-  ```yaml
+yaml
   deploy-zabbix:
     timeout: 30 minutes
 ````
