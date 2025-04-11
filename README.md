@@ -1,4 +1,7 @@
+![Banner](https://raw.githubusercontent.com/ahmadsheikhi89/gitlab-runner-docker-setup/main/banner.png)
 
+[![GitHub license](https://img.shields.io/github/license/ahmadsheikhi89/gitlab-runner-docker-setup?style=for-the-badge)](https://github.com/ahmadsheikhi89/gitlab-runner-docker-setup/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/ahmadsheikhi89/gitlab-runner-docker-setup?style=for-the-badge)](https://github.com/ahmadsheikhi89/gitlab-runner-docker-setup/stargazers)
 
 
 
