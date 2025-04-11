@@ -223,7 +223,7 @@ cd gitlab-runner && docker compose up -d
 
 ### ☁️ Summary
 
-- 📄 Licensed under the [MIT License](https://opensource.org/licenses/MIT). Feel free to use, modify, and share.
+- 📄 Licensed under the [MIT License](https://github.com/ahmadsheikhi89/gitlab-runner-docker-setup/blob/main/LICENSE). Feel free to use, modify, and share.
 
 - Self-hosted GitLab + GitLab Runner via Docker
 - CI/CD tested with real Docker commands
