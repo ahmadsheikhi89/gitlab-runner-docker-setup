@@ -1,7 +1,7 @@
-![Banner](https://raw.githubusercontent.com/ahmadsheikhi89/gitlab-runner-docker-setup/main/banner.png)
 
-[![GitHub license](https://img.shields.io/github/license/ahmadsheikhi89/gitlab-runner-docker-setup?style=for-the-badge)](https://github.com/ahmadsheikhi89/gitlab-runner-docker-setup/blob/main/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/ahmadsheikhi89/gitlab-runner-docker-setup?style=for-the-badge)](https://github.com/ahmadsheikhi89/gitlab-runner-docker-setup/stargazers)
+
+
+
 
 ## 🚀 GitLab & GitLab Runner Setup with Docker Compose | Complete Local GitLab CI/CD
 
@@ -24,12 +24,12 @@ Before getting started, make sure you have:
 
 ```bash
 project-root/
-├── docker-compose.yml            # GitLab main instance
+├── .gitignore                 # Ignore sensitive or unneeded files (e.g. logs, volumes)
+├── docker-compose.yml        # GitLab main instance config
 ├── gitlab-runner/
-│   ├── docker-compose.yml       # Runner service
-│   └── config/config.toml       # Runner config (contains settings like executor, Docker image, volume mounts, and token)
-
-└── .gitlab-ci.yml               # Main pipeline config
+│   ├── docker-compose.yml     # Runner service definition
+│   └── config/config.toml     # Runner configuration file
+└── .gitlab-ci.yml            # Main pipeline config
 ```
 
 ---
@@ -100,17 +100,22 @@ docker compose up -d
 ### 🔑 Step 3: Register the Runner
 
 1. Get the registration token from GitLab by running the following inside the GitLab container:
+
    ```bash
    docker exec -it gitlab bash
    gitlab-rails runner "puts Gitlab::CurrentSettings.current_application_settings.runners_registration_token"  # Run this inside the GitLab container with root privileges
    ```
+
    You should see a token like: `ABC12345xyz`. Copy this value.
 
 2. Register the runner using this token:
+
    ```bash
    docker exec -it gitlab-runner gitlab-runner register
    ```
+
    Then follow the interactive prompts:
+
    - GitLab URL: `http://host.docker.internal:8080` (or your host IP)
    - Token: (paste the token you copied)
    - Description: `my-runner`
@@ -120,7 +125,8 @@ docker compose up -d
 
    ✅ Once completed, you should see a confirmation that the runner was registered successfully.
 
-1. Get the registration token from GitLab by running the following inside the GitLab container:
+3. Get the registration token from GitLab by running the following inside the GitLab container:
+
    ````bash
    docker exec -it gitlab bash
    gitlab-rails runner "puts Gitlab::CurrentSettings.current_application_settings.runners_registration_token"
@@ -128,10 +134,13 @@ docker compose up -d
    docker exec -it gitlab bash
    gitlab-rails runner "puts Gitlab::CurrentSettings.current_application_settings.runners_registration_token"
    ````
-2. Register the runner:
+
+4. Register the runner:
+
    ```bash
    docker exec -it gitlab-runner gitlab-runner register
    ```
+
    - GitLab URL: `http://host.docker.internal:8080` (or your host IP)
    - Token: (paste it)
    - Description: `my-runner`
@@ -159,7 +168,7 @@ test-runner:
 
 
 
-````
+```
 
 ✅ If using shell executor, `docker` will be used from the host — no need for apk installation!
 
@@ -168,7 +177,7 @@ test-runner:
 yaml
   deploy-zabbix:
     timeout: 30 minutes
-````
+```
 
 - ✅ Check if runner has proper Docker access:
   Add a test job:
@@ -213,6 +222,8 @@ cd gitlab-runner && docker compose up -d
 ---
 
 ### ☁️ Summary
+
+- 📄 Licensed under the [MIT License](https://opensource.org/licenses/MIT). Feel free to use, modify, and share.
 
 - Self-hosted GitLab + GitLab Runner via Docker
 - CI/CD tested with real Docker commands
