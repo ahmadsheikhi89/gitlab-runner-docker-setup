@@ -1,6 +1,3 @@
-# gitlab-runner-docker-setup
-Full GitLab CI/CD setup using GitLab CE and GitLab Runner with Docker Compose
-
 ## 🚀 GitLab & GitLab Runner Setup with Docker Compose | Complete Local GitLab CI/CD
 
 This guide explains how to set up a self-hosted GitLab instance and GitLab Runner using Docker, and configure a working CI/CD pipeline — just like the one we used to test Docker execution.
@@ -26,6 +23,7 @@ project-root/
 ├── gitlab-runner/
 │   ├── docker-compose.yml       # Runner service
 │   └── config/config.toml       # Runner config
+│   └── .gitlab-ci.yml           # Zabbix deployment pipeline
 └── .gitlab-ci.yml               # Main pipeline config
 ```
 
@@ -58,8 +56,12 @@ docker compose up -d
 ```
 
 Access GitLab:
+
 - 🌐 Web UI: [http://localhost:8080](http://localhost:8080)
-- 🗝️ Default root password: found in `config/initial_root_password`
+- 🗝️ Default root password: run the following command:
+  ```bash
+  docker exec -it gitlab cat /etc/gitlab/initial_root_password
+  ```
 
 ---
 
@@ -90,11 +92,14 @@ docker compose up -d
 
 ### 🔑 Step 3: Register the Runner
 
-1. Get the registration token from GitLab:
+1. Get the registration token from GitLab by running the following inside the GitLab container:
+   ````bash
+   docker exec -it gitlab bash
+   gitlab-rails runner "puts Gitlab::CurrentSettings.current_application_settings.runners_registration_token"
    ```bash
    docker exec -it gitlab bash
    gitlab-rails runner "puts Gitlab::CurrentSettings.current_application_settings.runners_registration_token"
-   ```
+   ````
 2. Register the runner:
    ```bash
    docker exec -it gitlab-runner gitlab-runner register
@@ -124,7 +129,41 @@ test-runner:
     - echo "✅ CI runner works!"
 ```
 
+
+
+````
+
 ✅ If using shell executor, `docker` will be used from the host — no need for apk installation!
+
+---
+
+### 🔧 Troubleshooting CI/CD Failures
+
+#### ⏱️ Timeout or Stuck Job
+If you see an error like:
+> `There has been a timeout failure or the job got stuck.`
+
+Try the following:
+
+- ✅ Add a job timeout explicitly:
+  ```yaml
+  deploy-zabbix:
+    timeout: 30 minutes
+````
+
+- ✅ Check if runner has proper Docker access:
+  Add a test job:
+
+  ```yaml
+  test-docker:
+    stage: deploy
+    tags:
+      - docker
+    script:
+      - docker ps
+  ```
+
+- ✅ If using `when: manual`, remember to trigger the job manually in the GitLab UI.
 
 ---
 
