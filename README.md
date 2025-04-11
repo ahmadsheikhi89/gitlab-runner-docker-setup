@@ -1,4 +1,4 @@
-![Banner](https://raw.githubusercontent.com/ahmadsheikhi89/gitlab-runner-docker-setup/main/assets/gitlab-runner-banner.png)
+![Banner](https://raw.githubusercontent.com/ahmadsheikhi89/gitlab-runner-docker-setup/main/assets/banner.png)
 
 ## 🚀 GitLab & GitLab Runner Setup with Docker Compose | Complete Local GitLab CI/CD
 
