@@ -6,13 +6,11 @@
 
 
 
-## 🚀 GitLab & GitLab Runner Setup with Docker Compose | Complete Local GitLab CI/CD
+# GitLab & GitLab Runner Setup with Docker Compose | Complete Local GitLab CI/CD
 
 This guide explains how to set up a self-hosted GitLab instance and GitLab Runner using Docker, and configure a working CI/CD pipeline — just like the one we used to test Docker execution.
 
----
-
-### 📦 Prerequisites
+## 🚀 Prerequisites
 
 Before getting started, make sure you have:
 
@@ -21,9 +19,7 @@ Before getting started, make sure you have:
 - ✅ Open ports: `8080` (GitLab web), `2222` (Git SSH), `2375` (Docker socket if DinD)
 - ✅ Some basic knowledge of Git, Docker, and YAML
 
----
-
-### 📁 Directory Structure
+## 📁 Directory Structure
 
 ```bash
 project-root/
@@ -35,9 +31,7 @@ project-root/
 └── .gitlab-ci.yml            # Main pipeline config
 ```
 
----
-
-### 🐙 Step 1: Run GitLab via Docker Compose
+## 🐙 Step 1: Run GitLab via Docker Compose
 
 Create `docker-compose.yml` in your root folder:
 
@@ -73,9 +67,7 @@ Access GitLab:
   docker exec -it gitlab cat /etc/gitlab/initial_root_password
   ```
 
----
-
-### 🚀 Step 2: Start GitLab Runner
+## 🚀 Step 2: Start GitLab Runner
 
 Inside `gitlab-runner/docker-compose.yml`:
 
@@ -98,9 +90,7 @@ cd gitlab-runner
 docker compose up -d
 ```
 
----
-
-### 🔑 Step 3: Register the Runner
+## 🔑 Step 3: Register the Runner
 
 1. Get the registration token from GitLab by running the following inside the GitLab container:
 
@@ -128,32 +118,51 @@ docker compose up -d
 
    ✅ Once completed, you should see a confirmation that the runner was registered successfully.
 
-3. Get the registration token from GitLab by running the following inside the GitLab container:
+## 🗂️ Backup and Restore GitLab
 
-   ````bash
-   docker exec -it gitlab bash
-   gitlab-rails runner "puts Gitlab::CurrentSettings.current_application_settings.runners_registration_token"
-   ```bash
-   docker exec -it gitlab bash
-   gitlab-rails runner "puts Gitlab::CurrentSettings.current_application_settings.runners_registration_token"
-   ````
+#### 1. **Backup GitLab Data**
 
-4. Register the runner:
+To back up all your GitLab data (repositories, databases, and configurations), run the following command inside your GitLab container:
 
-   ```bash
-   docker exec -it gitlab-runner gitlab-runner register
-   ```
+```bash
+sudo docker exec -it gitlab bash
+gitlab-rake gitlab:backup:create
+```
 
-   - GitLab URL: `http://host.docker.internal:8080` (or your host IP)
-   - Token: (paste it)
-   - Description: `my-runner`
-   - Tags: `docker,linux`
-   - Executor: `shell` or `docker`
-   - Docker image (if docker): `docker:latest`
+This will create a backup in `/var/opt/gitlab/backups` inside the container. You can then copy these files to your local system for storage.
 
----
+To transfer the backup to your local machine:
 
-### ⚙️ Step 4: Configure `.gitlab-ci.yml`
+```bash
+sudo docker cp gitlab:/var/opt/gitlab/backups /path/to/your/local/storage
+```
+
+#### 2. **Backup GitLab Configuration**
+
+To back up the GitLab configuration files (e.g., SSH keys, and GitLab settings):
+
+```bash
+sudo docker cp gitlab:/etc/gitlab /path/to/your/local/storage
+```
+
+#### 3. **Restore GitLab Backup**
+
+To restore from a backup, use the following command inside the GitLab container, replacing `<timestamp_of_backup>` with the appropriate backup timestamp:
+
+```bash
+sudo docker exec -it gitlab bash
+gitlab-rake gitlab:backup:restore BACKUP=<timestamp_of_backup>
+```
+
+#### 4. **Automate Backup with Cron Jobs**
+
+You can set up a cron job to run the backup command automatically at regular intervals. Add the following to your cron configuration to back up GitLab every day at 2 AM:
+
+```bash
+0 2 * * * /usr/bin/gitlab-rake gitlab:backup:create
+```
+
+## ⚙️ Step 4: Configure `.gitlab-ci.yml`
 
 In the root of the repo:
 
@@ -169,34 +178,7 @@ test-runner:
     - echo "✅ CI runner works!"
 ```
 
-
-
-```
-
 ✅ If using shell executor, `docker` will be used from the host — no need for apk installation!
-
----
-
-yaml
-  deploy-zabbix:
-    timeout: 30 minutes
-```
-
-- ✅ Check if runner has proper Docker access:
-  Add a test job:
-
-  ```yaml
-  test-docker:
-    stage: deploy
-    tags:
-      - docker
-    script:
-      - docker ps
-  ```
-
-- ✅ If using `when: manual`, remember to trigger the job manually in the GitLab UI.
-
----
 
 ### 🔌 Shutdown Guide (Safe)
 
@@ -222,16 +204,12 @@ cd project-root && docker compose up -d
 cd gitlab-runner && docker compose up -d
 ```
 
----
-
-### ☁️ Summary
+## ☁️ Summary
 
 - 📄 Licensed under the [MIT License](https://github.com/ahmadsheikhi89/gitlab-runner-docker-setup/blob/main/LICENSE). Feel free to use, modify, and share.
-
 - Self-hosted GitLab + GitLab Runner via Docker
 - CI/CD tested with real Docker commands
 - Safe shutdown/startup cycle
 - Shell executor = easy access to Docker host
 
 Enjoy your 🚀 DevOps setup!
-
