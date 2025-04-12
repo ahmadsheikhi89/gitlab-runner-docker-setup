@@ -118,6 +118,21 @@ docker compose up -d
 
    ✅ Once completed, you should see a confirmation that the runner was registered successfully.
 
+## ⚙️ Step 4: Configure `.gitlab-ci.yml`
+
+In the root of the repo:
+
+```yaml
+stages:
+  - deploy
+
+test-runner:
+  stage: deploy
+  tags:
+    - docker
+  script:
+    - echo "✅ CI runner works!"
+```
 ## 🗂️ Backup and Restore GitLab
 
 #### 1. **Backup GitLab Data**
@@ -162,21 +177,6 @@ You can set up a cron job to run the backup command automatically at regular int
 0 2 * * * /usr/bin/gitlab-rake gitlab:backup:create
 ```
 
-## ⚙️ Step 4: Configure `.gitlab-ci.yml`
-
-In the root of the repo:
-
-```yaml
-stages:
-  - deploy
-
-test-runner:
-  stage: deploy
-  tags:
-    - docker
-  script:
-    - echo "✅ CI runner works!"
-```
 
 ✅ If using shell executor, `docker` will be used from the host — no need for apk installation!
 
