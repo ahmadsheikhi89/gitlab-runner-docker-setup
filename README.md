@@ -34,7 +34,6 @@ project-root/
 Create `docker-compose.yml` in your root folder:
 
 ```yaml
-version: '3'
 services:
   gitlab:
     image: gitlab/gitlab-ce:latest
